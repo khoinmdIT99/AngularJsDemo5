@@ -1,0 +1,118 @@
+﻿@model CasePortal.ViewModel.LogViewModel
+@using CasePortal.Common
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container" ng-controller="LogDetailController">
+    <input type="hidden" id="logId" value="@ViewBag.LogId " />
+    <div class="row">
+        @Html.Partial("~/Views/Home/_PartialSearch.cshtml")
+        <div class="col-lg-9">
+            <header>
+                <h1>
+                    {{logDetail.Name}}
+                </h1>
+                <i class="fa fa-calendar-alt"> @Constants.Posted {{logDetail.CreateAt}}</i>
+            </header>
+            <main>
+                <div class="data-show">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                                <th>@Html.DisplayNameFor(model => model.IncidentTypeName) </th>
+                                <th>@Html.DisplayNameFor(model => model.NotificationDate)</th>
+                                <th>@Html.DisplayNameFor(model => model.IncidentDate) </th>
+                                <th>@Html.DisplayNameFor(model => model.DistrictName) </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> {{logDetail.Name}}</td>
+                                <td>{{logDetail.IncidentTyleName}}</td>
+                                <td>{{logDetail.NotificationDate}}</td>
+                                <td>{{logDetail.IncidentDate}}</td>
+                                <td>{{logDetail.DistrictName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section class="list list-media">
+                    <h2>@Constants.Media</h2>
+                    <div class="row">
+                        <div class="col-sm-4 col-6 item item-media" ng-repeat="media in listMedia" ng-show="listMedia.length>0">
+                            <a class="center" data-toggle="modal" data-target="{{media.Type==1?'#video':'#audio'}}" ng-click="PlayMedia(media)">
+                                <i class="fas icon-media" ng-class="media.Type==1? 'fa-video-slash' : 'fa-volume-up'"></i>
+                                <span>{{media.Name}} </span>
+                            </a>
+                        </div>
+                        <div class="col-sm-4 col-6" ng-show="listMedia.length==0">
+                            <h6 class="no-data">@Constants.MessageNoData</h6>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="list list-document">
+                    <h2>@Constants.Document</h2>
+                    <div class="row">
+                        <div class="col-sm-4 col-6 item item-document" ng-repeat="document in listDocument" ng-show="listDocument.length>0">
+                            <a class="center"
+                               href="{{document.Path}}">
+                                <i class="fas fa-file-pdf icon-document"></i>
+                                <span>{{document.Name}} </span>
+                            </a>
+                        </div>
+                        <div class="col-sm-4 col-6" ng-show="listDocument.length==0">
+                            <h6 class="no-data">@Constants.MessageNoData</h6>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <div class="modal fade" id="video">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{media.Name}}</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="media">
+                        <video controls id="myVideo">
+                            <source src="#" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Constants.Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="audio">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{media.Name}}</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="media">
+                        <audio controls id="myAudio">
+                            <source src="#" type="audio/ogg">
+                        </audio>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Constants.Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

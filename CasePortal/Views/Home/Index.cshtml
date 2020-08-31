@@ -1,0 +1,69 @@
+﻿@model CasePortal.ViewModel.LogViewModel
+@using CasePortal.Common
+<div class="container" ng-controller="HomeController">
+    <div class="row">
+        @Html.Partial("~/Views/Home/_PartialSearch.cshtml")
+        <div class="col-lg-9">
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6">
+                    <div class="show-length">
+                        <label for="show-number">@Constants.Show</label>
+                        <select id="show-number" name="show-number" ng-model="itemsPerPage">
+                            @foreach (var item in Constants.ShowNumbers)
+                            {
+                                <option value="@item">@item</option>
+                            }
+                            <option value="{{listLog.length}}">@Constants.All</option>
+                        </select>
+                        <label for="district">@Constants.Entries</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="data-show">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th ng-click="sort('Name')">
+                                    @Html.DisplayNameFor(model => model.Name)
+                                    <span ng-show="sortKey=='Name'" ng-class="{'fa fa-angle-down':reverse,'fa fa-angle-up':!reverse}"></span>
+                                </th>
+                                <th ng-click="sort('IncidentTyleName')">
+                                    @Html.DisplayNameFor(model => model.IncidentTypeName)
+                                    <span ng-show="sortKey=='IncidentTyleName'" ng-class="{'fa fa-angle-down':reverse,'fa fa-angle-up':!reverse}"></span>
+                                </th>
+                                <th ng-click="sort('NotificationDate')">
+                                    @Html.DisplayNameFor(model => model.NotificationDate)
+                                    <span ng-show="sortKey=='NotificationDate'" ng-class="{'fa fa-angle-down':reverse,'fa fa-angle-up':!reverse}"></span>
+                                </th>
+                                <th ng-click="sort('IncidentDate')">
+                                    @Html.DisplayNameFor(model => model.IncidentDate)
+                                    <span ng-show="sortKey=='IncidentDate'" ng-class="{'fa fa-angle-down':reverse,'fa fa-angle-up':!reverse}"></span>
+                                </th>
+                                <th ng-click="sort('DistrictName')">
+                                    @Html.DisplayNameFor(model => model.DistrictName)
+                                    <span ng-show="sortKey=='DistrictName'" ng-class="{'fa fa-angle-down':reverse,'fa fa-angle-up':!reverse}"></span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="log in listLog |orderBy:sortKey:reverse| itemsPerPage:itemsPerPage" ng-show="listLog.length>0">
+                                <td> <a class="log" href="/Home/detail/{{log.Id}}">{{log.Name}}</a> </td>
+                                <td>{{log.IncidentTypeName}}</td>
+                                <td>{{log.NotificationDate | date : "MM/dd/yyyy h:mm a"}}</td>
+                                <td>{{log.IncidentDate | date : "MM/dd/yyyy"}}</td>
+                                <td>{{log.DistrictName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <dir-pagination-controls class="pagination" max-size="5" direction-links="true" boundary-links="true">
+                </div>
+                <div ng-show="listLog.length==0">
+                    <h6 class="no-data">@Constants.MessageNoData</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
